@@ -1,0 +1,26 @@
+<div class="comments">
+    {% for comment in object.comments.all %}
+    {% if request.user.is_authenticated%}
+    <div class="comment">
+        <strong>{{ comment.author }}</strong>・{{ comment.created_at }}
+        <p>{{ comment.text|linebreaksbr }}</p>
+        <p>
+            <a href="{% url 'ramenapp:reply_form' comment.pk %}">返信する</a>
+            ｜<a class="text-danger" href="{% url 'ramenapp:comment_delete' comment.pk %}">削除</a>
+        </p>
+
+        {% for reply in comment.replies.all %}
+        {% if request.user.is_authenticated%}
+        <div class="reply ml-5">
+            <strong>{{ reply.author }}</strong>・{{ reply.created_at }}
+            <p>{{ reply.text|linebreaksbr }}</p>
+            <p>
+                ｜<a class="text-danger" href="{% url 'ramenapp:reply_delete' reply.pk %}">削除</a>
+            </p>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
