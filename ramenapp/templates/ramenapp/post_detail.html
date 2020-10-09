@@ -63,7 +63,7 @@
 <br>
 <div class="comment-area">
     <h3>コメント欄</h3>
-    {% if not request.user.is_authenticated %}
+    {% if not request.user.is_authenticated or request.user.is_authenticated %}
     <a class="btn btn-primary my-3" href="{% url 'ramenapp:comment_form' object.pk %}">コメントを投稿する</a>
     {% endif %}
     <br>
