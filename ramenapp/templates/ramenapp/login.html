@@ -11,14 +11,14 @@
             {% csrf_token %}
             {{ form.non_field_errors }}
             {% for field in form %}
-                {{field.label}}
-                {{ field }}
-                {{ field.errors }}
-                <br>
+            {{field.label}}
+            {{ field }}
+            {{ field.errors }}
+            <br>
             {% endfor %}
             <button type="submit" class="btn btn-primary">ログイン</button>
+            <a href="{% url 'ramenapp:signup' %}">＜初めての方はこちら＞</a>
         </form>
     </div>
 </div>
 {% endblock content %}
-    
