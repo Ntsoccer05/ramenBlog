@@ -4,9 +4,15 @@
 {% block content %}
 <div class="row">
     <div class="col-md-6">
-        <br>
+        <br><br>
         <h2>ログイン</h2>
         <br>
+        <a class="btn btn-danger btn-block" href="{% url 'social:begin' 'google-oauth2' %}"><i
+                class="fab fa-google mr-3 fa-2x"></i>Googleでログイン</a>
+        <br><br>
+        <a href="{% url 'social:begin' 'github' %}" class="btn btn-block btn-black"><i
+                class="fab fa-github mr-3 fa-2x"></i>GitHubでログイン</a>
+        <br><br>
         <form action="" method="post">
             {% csrf_token %}
             {{ form.non_field_errors }}

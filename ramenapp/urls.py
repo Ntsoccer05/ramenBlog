@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 app_name = 'ramenapp'
@@ -26,4 +26,5 @@ urlpatterns = [
          views.CommentDelete.as_view(), name='comment_delete'),
     path('reply/<int:pk>', views.ReplyFormView.as_view(), name='reply_form'),
     path('reply_delete/<int:pk>', views.ReplyDelete.as_view(), name='reply_delete'),
+    path('oauth/', include('social_django.urls', namespace='social')),
 ]
