@@ -22,6 +22,13 @@ class OnlyMyPostMixin(UserPassesTestMixin):
         post = Post.objects.get(id=self.kwargs['pk'])
         return post.author == self.request.user
 
+# class OnlyMyCommentMixin(UserPassesTestMixin):
+#     raise_exception=True
+
+#     def test_func(self):
+#         comment=Comment.objects.get(id=self.kwargs['pk'])
+#         return comment.
+
 
 class Index(TemplateView):
     template_name = 'ramenapp/index.html'
