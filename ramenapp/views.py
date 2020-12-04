@@ -27,7 +27,7 @@ class OnlyMyPostMixin(UserPassesTestMixin):
 
 #     def test_func(self):
 #         comment=Comment.objects.get(id=self.kwargs['pk'])
-#         return comment.
+#         return comment.post.author==self.request.user
 
 
 class Index(TemplateView):
@@ -117,7 +117,7 @@ class SignUp(CreateView):
 
     def form_valid(self, form):
         user = form.save()
-        login(self.request, user)
+        login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
         self.object = user
         messages.info(self.request, 'ユーザー登録をしました。')
         return HttpResponseRedirect(self.get_success_url())
