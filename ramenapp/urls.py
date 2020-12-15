@@ -27,4 +27,5 @@ urlpatterns = [
     path('reply/<int:pk>', views.ReplyFormView.as_view(), name='reply_form'),
     path('reply_delete/<int:pk>', views.ReplyDelete.as_view(), name='reply_delete'),
     path('oauth/', include('social_django.urls', namespace='social')),
+    path('google285b2115e8e0c8a6.html', views.google, name='google'),
 ]

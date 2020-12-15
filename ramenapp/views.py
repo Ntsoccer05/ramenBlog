@@ -278,3 +278,7 @@ class ReplyDelete(LoginRequiredMixin, DeleteView):
         pk = reply.comment.post.id
         messages.info(self.request, '返信コメントを削除しました。')
         return resolve_url('ramenapp:post_detail', pk=pk)
+
+
+def google(request):
+    return render(request, 'ramenapp/google285b2115e8e0c8a6.html')
