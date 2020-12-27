@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'sitemanage',
     'storages',
     'social_django',
+    'django.contrib.sitemaps',
 ]
 
 SITE_ID = 1
@@ -93,7 +94,7 @@ WSGI_APPLICATION = 'ramenproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': str(os.path.join(BASE_DIR, "db.sqlite3"))
     }
 }
 
