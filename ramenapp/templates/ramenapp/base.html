@@ -16,6 +16,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title>{{request.site.siteconfig.meta_title}}</title>
+  <!--twitter card-->
+  {% if object %}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@N_T_soccer0512" />
+  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+  <meta property="og:title" content="{{object.title}}" />
+  <meta property="og:description" content="{{object.content}}" />
+  <meta property="og:image" content="{{ object.thumbnail.url }}" />
+  {% endif %}
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
   <!-- Google Fonts -->

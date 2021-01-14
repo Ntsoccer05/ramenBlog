@@ -5,69 +5,69 @@
 <br><br>
 <div class="row">
 
-    <div class="col-md-9">
-        <!-- Card -->
-        <div class="card">
+  <div class="col-md-9">
+    <!-- Card -->
+    <div class="card">
 
-            <!-- Card image -->
-            {% if object.thumbnail %}
-            <img class="card-img-top" src="{{ object.thumbnail.url }}" alt="{{item.title}}">
-            {% else %}
-            <img class="card-img-top" src="../../../media/images/hari-panicker-2t28IxSTqF4-unsplash-min.jpg"
-                alt="Card image cap">
-            {% endif %}
+      <!-- Card image -->
+      {% if object.thumbnail %}
+      <img class="card-img-top" src="{{ object.thumbnail.url }}" alt="{{item.title}}">
+      {% else %}
+      <img class="card-img-top" src="../../../media/images/hari-panicker-2t28IxSTqF4-unsplash-min.jpg"
+        alt="Card image cap">
+      {% endif %}
 
-            <!-- Card content -->
-            <div class="card-body">
+      <!-- Card content -->
+      <div class="card-body">
 
-                <!-- Title -->
-                <h4 class="card-title"><a>{{object.title}}</a></h4>
-                <!-- Text -->
-                <p class="card-text">{{object.content|safe|linebreaksbr|urlize}}</p>
-                <!-- Button -->
-                <a href="{% url 'ramenapp:like_add' object.pk %}" class="btn"
-                    style="background-color: #FF6699; color: white;">お気に入りにいれる</a>
-                <small>{% if object.like_count %}{{object.like_count}}人{% endif %}</small>
-                <hr>
-                <a href="/" class="btn btn-outline-dark">戻る</a>
-                {% if object.author == request.user %}
-                <a href="{% url 'ramenapp:post_update' object.id%}" class="btn btn-primary">更新</a>
-                <a href="{% url 'ramenapp:post_delete' object.id%}" class="btn btn-danger">削除</a>
-                {% endif %}
-            </div>
+        <!-- Title -->
+        <h4 class="card-title"><a>{{object.title}}</a></h4>
+        <!-- Text -->
+        <p class="card-text">{{object.content|safe|linebreaksbr|urlize}}</p>
+        <!-- Button -->
+        <a href="{% url 'ramenapp:like_add' object.pk %}" class="btn"
+          style="background-color: #FF6699; color: white;">お気に入りにいれる</a>
+        <small>{% if object.like_count %}{{object.like_count}}人{% endif %}</small>
+        <hr>
+        <a href="/" class="btn btn-outline-dark">戻る</a>
+        {% if object.author == request.user %}
+        <a href="{% url 'ramenapp:post_update' object.id%}" class="btn btn-primary">更新</a>
+        <a href="{% url 'ramenapp:post_delete' object.id%}" class="btn btn-danger">削除</a>
+        {% endif %}
+      </div>
 
-        </div>
-        <!-- Card -->
     </div>
-    <div class="col-md-3">
-        <br>
-        <!-- Card -->
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">{{object.category}}</h5>
-                <p>このカテゴリの他の記事</p>
-            </div>
-            <ul class="list-group">
-                {% for item in category_posts %}
-                <li class="list-group-item"><a href="{% url 'ramenapp:post_detail' item.id %}">{{item.title}}</a></li>
-                {% endfor %}
-            </ul>
+    <!-- Card -->
+  </div>
+  <div class="col-md-3">
+    <br>
+    <!-- Card -->
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{object.category}}</h5>
+        <p>このカテゴリの他の記事</p>
+      </div>
+      <ul class="list-group">
+        {% for item in category_posts %}
+        <li class="list-group-item"><a href="{% url 'ramenapp:post_detail' item.id %}">{{item.title}}</a></li>
+        {% endfor %}
+      </ul>
 
 
-        </div>
-        <!-- Card -->
     </div>
+    <!-- Card -->
+  </div>
 </div>
 <br><br>
 <hr>
 <br>
 <div class="comment-area">
-    <h3>コメント欄</h3>
-    {% if not request.user.is_authenticated or request.user.is_authenticated %}
-    <a class="btn btn-primary my-3" href="{% url 'ramenapp:comment_form' object.pk %}">コメントを投稿する</a>
-    {% endif %}
-    <br>
-    {% include 'ramenapp/comments.html' %}
+  <h3>コメント欄</h3>
+  {% if not request.user.is_authenticated or request.user.is_authenticated %}
+  <a class="btn btn-primary my-3" href="{% url 'ramenapp:comment_form' object.pk %}">コメントを投稿する</a>
+  {% endif %}
+  <br>
+  {% include 'ramenapp/comments.html' %}
 </div>
 
 
