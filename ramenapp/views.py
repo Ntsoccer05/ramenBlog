@@ -13,6 +13,17 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from django.core.exceptions import ValidationError
 from django.views.generic.edit import FormView
+from django.contrib.sitemaps import ping_google
+
+
+@login_required
+def ping(request):
+  try:
+    if request.user.is_admin:
+      ping_google()  
+  except:
+    pass
+  return redirect('/')
 
 
 class OnlyMyPostMixin(UserPassesTestMixin):
