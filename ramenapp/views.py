@@ -14,6 +14,8 @@ from django.core.paginator import Paginator
 from django.core.exceptions import ValidationError
 from django.views.generic.edit import FormView
 from django.contrib.sitemaps import ping_google
+from django.http import JsonResponse
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 
 @login_required
@@ -155,7 +157,6 @@ def Like_add(request, *args, **kwargs):
 
     messages.success(request, 'お気に入りに追加しました。')
     return redirect('ramenapp:index')
-
 
 class CategoryList(ListView):
     model = Category
