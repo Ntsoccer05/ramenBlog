@@ -63,9 +63,11 @@
             <span class="sr-only">(current)</span>
           </a>
         </li>
+        {% if user.is_superuser %}
         <li class="nav-item">
           <a class="nav-link" href="/admin" target="_blank">管理画面へ</a>
         </li>
+        {% endif %}
         <!-- Dropdown -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="account" data-toggle="dropdown" aria-haspopup="true"
@@ -82,14 +84,20 @@
         </li>
 
         <!-- Dropdown -->
+        {% if user.is_superuser %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">投稿</a>
           <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
             <a class="dropdown-item" href="{% url 'ramenapp:post_create' %}">新規投稿</a>
-            <a class="dropdown-item" href="{% url 'ramenapp:post_list' %}">投稿一覧</a>
+            <a class="dropdown-item" href="{% url 'ramenapp:post_list' %}">記事一覧</a>
           </div>
         </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'ramenapp:post_list' %}">記事一覧</a>
+        </li>
+        {% endif %}
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"

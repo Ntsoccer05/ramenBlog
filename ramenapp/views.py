@@ -16,6 +16,7 @@ from django.views.generic.edit import FormView
 from django.contrib.sitemaps import ping_google
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
+from .mixins import SuperuserRequiredMixin
 
 
 @login_required
@@ -58,7 +59,7 @@ class Index(TemplateView):
         return context
 
 
-class PostCreate(LoginRequiredMixin, CreateView):
+class PostCreate(SuperuserRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
     success_url = reverse_lazy('ramenapp:index')
