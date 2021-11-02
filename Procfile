@@ -1,3 +1,1 @@
-web: gunicorn ramenproject.wsgi:application --log-file - --log-level debug
-python manage.py collectstatic --noinput
-manage.py migrate
+web: gunicorn ramenproject.wsgi:application -b 0.0.0.0:$PORT
