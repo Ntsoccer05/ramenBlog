@@ -234,7 +234,7 @@ class CommentFormView(LoginRequiredMixin, CreateView):
         comment = form.save(commit=False)
         post_pk = self.kwargs['pk']
         post = get_object_or_404(Post, pk=post_pk)
-        form.instance.author = self.request.user
+        # form.instance.author = self.request.user
         form.instance.author_id = self.request.user.id
         comment.useremail = self.request.user.email
         comment.post = post
@@ -277,7 +277,7 @@ class ReplyFormView(LoginRequiredMixin, CreateView):
         comment_pk = self.kwargs['pk']
         comment = get_object_or_404(Comment, pk=comment_pk)
         reply.comment = comment
-        form.instance.author = self.request.user
+        # form.instance.author = self.request.user
         form.instance.author_id = self.request.user.id
         reply.request = self.request
         reply.save()
