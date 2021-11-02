@@ -235,6 +235,7 @@ class CommentFormView(LoginRequiredMixin, CreateView):
         post_pk = self.kwargs['pk']
         post = get_object_or_404(Post, pk=post_pk)
         form.instance.author = self.request.user
+        form.instance.author_id = self.request.user.id
         comment.useremail = self.request.user.email
         comment.post = post
         comment.request = self.request
@@ -277,6 +278,7 @@ class ReplyFormView(LoginRequiredMixin, CreateView):
         comment = get_object_or_404(Comment, pk=comment_pk)
         reply.comment = comment
         form.instance.author = self.request.user
+        form.instance.author_id = self.request.user.id
         reply.request = self.request
         reply.save()
         return redirect('ramenapp:post_detail', pk=reply.comment.post.pk)
