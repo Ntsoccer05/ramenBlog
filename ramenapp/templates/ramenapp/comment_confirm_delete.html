@@ -12,13 +12,13 @@
                 {% csrf_token %}
                 <p>以下の内容を本当に削除しますか？</p>
                 <input type="submit" class="btn btn-outline-danger" value="削除する">
+                <button type="button" onclick="history.back()"
+                    class="btn ml-5 btn-outline-primary waves-effect">戻る</button>
             </form>
         </div>
         <br>
-        <p>タイトル</p>
-        {{object.title}}
         <hr>
-        <p>内容</p>
+        <p>コメント内容</p>
         {{object.text}}
     </div>
 </div>

@@ -3,7 +3,7 @@ from .models import Post, Comment, Reply
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.core.mail import BadHeaderError, send_mail
+from django.core.mail import BadHeaderError, send_mail, EmailMessage
 from django.http import HttpResponse
 from django.conf import settings
 from django.forms import ModelForm, TextInput, Textarea
@@ -82,32 +82,55 @@ class ContactForm(forms.Form):
         message = self.cleaned_data['message']
         name = self.cleaned_data['name']
         email = self.cleaned_data['email']
+        sender = self.cleaned_data['email']
         subject = self.cleaned_data['subject']
-        from_email = '{name} <{email}> ({subject})'.format(
-            name=name, email=email, subject=subject)
+        # from_email = '{name} <{email}> ({subject})'.format(
+        #     name=name, email=email, subject=subject)
         recipient_list = [settings.EMAIL_HOST_USER]
         try:
-            send_mail(subject, message, from_email, recipient_list)
+            # send_mail(subject, message, from_email, recipient_list)
+            message = EmailMessage(subject="名前: " + name + " 内容: " + subject,
+                            body="From："+sender+"\n"+message,
+                            from_email=email,
+                            to=recipient_list,
+                        )
+            message.send()
         except BadHeaderError:
             return HttpResponse('無効なヘッダが検出されました。')
 
 
 class CommentForm(ModelForm):
-    class Meta:
-        model = Comment
-        fields = ('author', 'text')
-        widgets = {
-            'author': TextInput(attrs={
+    mailadress = forms.CharField(help_text='※入力しておくと、他の方から返信があった際に通知します。コメント欄には表示されません。登録の際にメールアドレスを登録している場合必要ありません', label='メールアドレス', required=False, widget=forms.EmailInput(attrs={
                 'class': 'form-control',
-                'placeholder': '名前'
-            }),
-            'text': Textarea(attrs={
+                'placeholder': 'メールアドレス(※任意です)',
+            }))
+    text = forms.CharField(label='コメント', widget=forms.Textarea(attrs={
                 'class': 'form-control',
                 'placeholder': 'コメント内容'
-            }),
-        }
+            }))
+    class Meta:
+        model = Comment
+        fields = ('text','mailadress',)
+        # mailadress = forms.CharField(widget=forms.EmailInput(attrs={
+        #         'required' : 'false',
+        #         'class': 'form-control',
+        #         'placeholder': 'メールアドレス(任意です)'
+        #     }))
+        # text = forms.CharField(widget=forms.Textarea(attrs={
+        #         'class': 'form-control',
+        #         'placeholder': 'コメント内容'
+        #     }))
+        # widgets = {
+        #     'text': Textarea(attrs={
+        #         'class': 'form-control',
+        #         'placeholder': 'コメント内容'
+        #     }),
+        #     'mailadress': EmailInput(attrs={
+        #         'class': 'form-control',
+        #         'placeholder': 'メールアドレス(任意です)'
+        #     }),
+        # }
         labels = {
-            'author': '',
             'text': '',
         }
 
@@ -115,18 +138,13 @@ class CommentForm(ModelForm):
 class ReplyForm(ModelForm):
     class Meta:
         model = Reply
-        fields = ('author', 'text')
+        fields = ('text',)
         widgets = {
-            'author': TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': '名前',
-            }),
             'text': Textarea(attrs={
                 'class': 'form-control',
                 'placeholder': '返信内容',
             }),
         }
         labels = {
-            'author': '',
             'text': '',
         }

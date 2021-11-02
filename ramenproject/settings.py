@@ -135,7 +135,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+
 STATIC_URL = '/static/'
+# 仮想環境のみ
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # STATICFILES_DIRS = (
 #     os.path.join(BASE_DIR, 'static'),
@@ -165,7 +167,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-
 # Herokuデプロイ
 DATABASES['default'] = dj_database_url.config()
 
@@ -175,6 +176,7 @@ ALLOWED_HOSTS = ['*']
 
 # STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
+# 本番環境でコメントを外す
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEBUG = False
@@ -186,6 +188,7 @@ except ImportError:
 
 if not DEBUG:
     SECRET_KEY = os.environ['SECRET_KEY']
+    DEFAULT_FROM_EMAIL = os.environ['DEFAULT_FROM_EMAIL']
     EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
     EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
     SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ['SOCIAL_AUTH_GOOGLE_OAUTH2_KEY']

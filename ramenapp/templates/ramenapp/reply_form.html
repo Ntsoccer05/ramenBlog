@@ -1,6 +1,5 @@
 {% extends 'ramenapp/base.html' %}
 
-
 {% block content %}
 <div class="container">
     <div class="row">
@@ -8,7 +7,11 @@
             <br>
             <br>
             <h1 class="mb-4">コメント返信フォーム</h1>
-            <p>To: {{ comment.author }}さん</p>
+            {% if reply %}
+            <strong>To: {{ reply.author }}</strong>
+            {% else %}
+            <strong>To: {{ comment.author }}</strong>
+            {% endif %}
             <p class="text-black-50">{{ comment.text|linebreaksbr }}</p>
             <form method="POST">{% csrf_token %}
                 {{ form.as_p }}

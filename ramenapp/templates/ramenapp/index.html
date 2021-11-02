@@ -37,19 +37,19 @@
         <div class="card-body">
 
           <!--Title-->
-          <h4 class="card-title">{{item.title}}&nbsp;&nbsp;<i class="fas fa-star"
+          <h4 class="card-title"><a class="main-title" href="{% url 'ramenapp:post_detail' item.id %}" style="color: black;">{{item.title}}</a>&nbsp;&nbsp;<i class="fas fa-star"
               style="color: yellow;"></i><small>{{item.star}}</small></h4>
           <p>{{ item.category }}</p>
           <!--Text-->
           <p class="card-text">{{item.content|safe|truncatechars_html:50}}</p>
           <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
-          <a href="{% url 'ramenapp:post_detail' item.id %}" type="button" class="btn btn-light-blue btn-md">もっと読む</a>
+          <a href="{% url 'ramenapp:post_detail' item.id %}" type="button" class="btn btn-light-blue btn-md">内容を見る</a>
           <a href="{% url 'ramenapp:like_add' item.pk %}"><i class="fas fa-heart"
               style="color: pink;"></i></a>&nbsp;{{item.like_count}}
         </div>
         <!-- Card footer -->
         <div class="card-footer text-muted text-center">
-          <small>by&nbsp;{{item.author}}&nbsp;at
+          <small>更新日: 
             {% if item.updated_at %}
             {{item.updated_at.date}}
             {% else %}

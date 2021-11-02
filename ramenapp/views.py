@@ -36,12 +36,19 @@ class OnlyMyPostMixin(UserPassesTestMixin):
         post = Post.objects.get(id=self.kwargs['pk'])
         return post.author == self.request.user
 
-# class OnlyMyCommentMixin(UserPassesTestMixin):
-#     raise_exception=True
+class OnlyMyCommentMixin(UserPassesTestMixin):
+    raise_exception=True
 
-#     def test_func(self):
-#         comment=Comment.objects.get(id=self.kwargs['pk'])
-#         return comment.post.author==self.request.user
+    def test_func(self):
+        comment=Comment.objects.get(id=self.kwargs['pk'])
+        return comment.author==self.request.user
+
+class OnlyMyReplyMixin(UserPassesTestMixin):
+    raise_exception=True
+
+    def test_func(self):
+        reply=Reply.objects.get(id=self.kwargs['pk'])
+        return reply.author==self.request.user
 
 
 class Index(TemplateView):
@@ -87,7 +94,7 @@ class PostDetail(DetailView):
         return params
 
 
-class PostUpdate(OnlyMyPostMixin, UpdateView):
+class PostUpdate(SuperuserRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
 
@@ -96,7 +103,7 @@ class PostUpdate(OnlyMyPostMixin, UpdateView):
         return resolve_url('ramenapp:post_detail', pk=self.kwargs['pk'])
 
 
-class PostDelete(OnlyMyPostMixin, DeleteView):
+class PostDelete(SuperuserRequiredMixin, DeleteView):
     model = Post
 
     def get_success_url(self):
@@ -219,14 +226,18 @@ class ContactFormView(FormView):
         return resolve_url('ramenapp:index')
 
 
-class CommentFormView(CreateView):
+class CommentFormView(LoginRequiredMixin, CreateView):
     model = Comment
     form_class = CommentForm
 
     def form_valid(self, form):
         comment = form.save(commit=False)
         post_pk = self.kwargs['pk']
-        comment.post = get_object_or_404(Post, pk=post_pk)
+        post = get_object_or_404(Post, pk=post_pk)
+        form.instance.author = self.request.user
+        comment.useremail = self.request.user.email
+        comment.post = post
+        comment.request = self.request
         comment.save()
         return redirect('ramenapp:post_detail', pk=post_pk)
 
@@ -246,7 +257,7 @@ class CommentFormView(CreateView):
 #     comment = get_object_or_404(Comment, pk=pk)
 #     comment.delete()
 #     return redirect('ramenapp;post_detail', pk=comment.post.pk)
-class CommentDelete(LoginRequiredMixin, DeleteView):
+class CommentDelete(OnlyMyCommentMixin, DeleteView):
     model = Comment
 
     def get_success_url(self):
@@ -256,26 +267,51 @@ class CommentDelete(LoginRequiredMixin, DeleteView):
         return resolve_url('ramenapp:post_detail', pk=pk)
 
 
-class ReplyFormView(CreateView):
+class ReplyFormView(LoginRequiredMixin, CreateView):
     model = Reply
     form_class = ReplyForm
 
     def form_valid(self, form):
         reply = form.save(commit=False)
         comment_pk = self.kwargs['pk']
-        reply.comment = get_object_or_404(Comment, pk=comment_pk)
+        comment = get_object_or_404(Comment, pk=comment_pk)
+        reply.comment = comment
+        form.instance.author = self.request.user
+        reply.request = self.request
         reply.save()
         return redirect('ramenapp:post_detail', pk=reply.comment.post.pk)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        comment_pk = self.kwargs['pk']
-        # comment = get_object_or_404(Comment, pk=comment_pk)
-        # context = {
-        #     'comment': comment
-        # }
-        context['comment'] = get_object_or_404(Comment, pk=comment_pk)
+        pk = self.kwargs['pk']
+        comment = get_object_or_404(Comment, pk=pk)
+        context['comment'] = comment
+        context['post'] = comment.post 
         return context
+
+
+# class ReplyToReplyFormView(LoginRequiredMixin, CreateView):
+#     model = Reply
+#     form_class = ReplyForm
+
+#     def form_valid(self, form):
+#         reply = form.save(commit=False)
+#         comment_id = self.kwargs['comment_id']
+#         comment = Comment.objects.get(pk=comment_id)
+#         reply.comment = comment
+#         form.instance.author = self.request.user
+#         reply.request = self.request
+#         reply.save()
+
+#         return redirect('ramenapp:post_detail', pk=reply.comment.post.pk)
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         pk = self.kwargs['pk']
+#         reply = Reply.objects.get(pk=pk)
+#         context['reply'] = reply 
+#         return context
+
 
 
 # @login_required
@@ -283,7 +319,7 @@ class ReplyFormView(CreateView):
 #     reply = get_object_or_404(Reply, pk=pk)
 #     reply.delete()
 #     return redirect('ramenapp:post_detail', pk=reply.comment.post.pk)
-class ReplyDelete(LoginRequiredMixin, DeleteView):
+class ReplyDelete(OnlyMyReplyMixin, DeleteView):
     model = Reply
 
     def get_success_url(self):
@@ -295,3 +331,5 @@ class ReplyDelete(LoginRequiredMixin, DeleteView):
 
 def google(request):
     return render(request, 'ramenapp/google285b2115e8e0c8a6.html')
+
+ 

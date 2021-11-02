@@ -2,6 +2,10 @@
     display: none!important
 }
 
+.main-title:hover {
+    text-decoration: underline;
+}
+
 @media screen and (max-width:900px) {
     .navbar-brand {
         display: block!important

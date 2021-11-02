@@ -8,9 +8,11 @@
             <br>
             <br>
             <h1 class="mb-4">コメント投稿フォーム</h1>
-            <p>To:「{{ post.title }}」</p>
+            <p>To: {{ post.author }}</p>
             <form method="POST">{% csrf_token %}
                 {{ form.as_p }}
+                <!-- {{form.mailadress}}
+                {{form.text}} -->
                 <button type="submit" class="btn btn-primary">送信</button>
             </form>
             <br>
