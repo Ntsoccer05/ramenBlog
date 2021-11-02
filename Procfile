@@ -1,1 +1,1 @@
-web: gunicorn ramenproject.wsgi:application -b 0.0.0.0:$PORT
+web: gunicorn ramenproject.wsgi

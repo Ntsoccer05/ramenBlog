@@ -187,7 +187,7 @@ try:
 except ImportError:
     pass
 
-if not DEBUG:
+# if not DEBUG:
     SECRET_KEY = os.environ['SECRET_KEY']
     DEFAULT_FROM_EMAIL = os.environ['DEFAULT_FROM_EMAIL']
     EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
