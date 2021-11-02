@@ -3,8 +3,6 @@ from . import views
 
 app_name = 'ramenapp'
 
-handler500 = views.my_customized_server_error
-
 urlpatterns = [
     path('', views.Index.as_view(), name='index'),
     path('post_create', views.PostCreate.as_view(), name='post_create'),
