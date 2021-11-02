@@ -179,7 +179,7 @@ ALLOWED_HOSTS = ['*']
 # 本番環境でコメントを外す
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-DEBUG = True
+DEBUG = False
 
 try:
     from .local_settings import *

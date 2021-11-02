@@ -10,13 +10,14 @@ class BlogPostSitemap(Sitemap):
     """
     changefreq = "daily"
     priority = 0.8
+    protocol = "https"
 
     def items(self):
         return Post.objects.all()
 
     # モデルに get_absolute_url() が定義されている場合は不要
     def location(self, obj):
-        return reverse('ramenapp:post_detail', kwargs={'pk':obj.id})
+        return reverse('ramenapp:post_detail', args=[obj.pk])
 
     def lastmod(self, obj):
         if obj.updated_at:
@@ -29,8 +30,9 @@ class StaticViewSitemap(Sitemap):
     """
     静的ページのサイトマップ
     """
-    changefreq = "daily"
+    changefreq = "weekly"
     priority = 0.5
+    protocol = "https"
 
     def items(self):
         return ['ramenapp:index', 'ramenapp:category_list', 'ramenapp:post_list']
