@@ -52,7 +52,7 @@ class Like(models.Model):
 class Comment(models.Model):
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name='comments')
-    author = models.ForeignKey(User, on_delete=models.CASCADE, blank=False)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=True)
     text = models.TextField()
     mailadress = models.EmailField('メールアドレス', blank=True, null=True, help_text='(※入力しておくと、返信があった際に通知します。コメント欄には表示されません。登録の際にメールアドレスを登録している場合必要ありません)')
     useremail = models.EmailField('ユーザーのメールアドレス', blank=True, null=True)
