@@ -9,6 +9,11 @@ from django.conf import settings
 from django.core.mail import send_mail
 
 
+class Author(models.Model):
+    name = models.CharField(max_length=200)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
 class Category(models.Model):
     name = models.CharField('カテゴリ名', max_length=50)
     name_en = models.CharField('カテゴリ名英語', max_length=50)

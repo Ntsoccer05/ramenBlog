@@ -1,7 +1,7 @@
 from django.shortcuts import render, resolve_url, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import TemplateView, CreateView, DetailView, UpdateView, DeleteView, ListView
-from .models import Post, Like, Category, Comment, Reply
+from .models import Post, Like, Category, Comment, Reply, Author
 from django.urls import reverse_lazy
 from django.contrib import messages
 from .forms import PostForm, LoginForm, SignUpForm, SearchForm, ContactForm, CommentForm, ReplyForm
@@ -50,6 +50,13 @@ class OnlyMyReplyMixin(UserPassesTestMixin):
         reply=Reply.objects.get(id=self.kwargs['pk'])
         return reply.author==self.request.user
 
+class AuthorCreate(LoginRequiredMixin, CreateView):
+    model = Author
+    fields = ['name']
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
 
 class Index(TemplateView):
     template_name = 'ramenapp/index.html'
@@ -234,8 +241,8 @@ class CommentFormView(LoginRequiredMixin, CreateView):
         comment = form.save(commit=False)
         post_pk = self.kwargs['pk']
         post = get_object_or_404(Post, pk=post_pk)
-        # form.instance.author = self.request.user
-        form.instance.author_id = self.request.user.id
+        form.instance.author = self.request.user
+        # form.instance.author_id = self.request.user.id
         comment.useremail = self.request.user.email
         comment.post = post
         comment.request = self.request
@@ -277,8 +284,8 @@ class ReplyFormView(LoginRequiredMixin, CreateView):
         comment_pk = self.kwargs['pk']
         comment = get_object_or_404(Comment, pk=comment_pk)
         reply.comment = comment
-        # form.instance.author = self.request.user
-        form.instance.author_id = self.request.user.id
+        form.instance.author = self.request.user
+        # form.instance.author_id = self.request.user.id
         reply.request = self.request
         reply.save()
         return redirect('ramenapp:post_detail', pk=reply.comment.post.pk)
