@@ -137,6 +137,7 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
+
 # 仮想環境のみ
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # STATICFILES_DIRS = (
