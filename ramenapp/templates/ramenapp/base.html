@@ -45,7 +45,13 @@
   <nav class="navbar fixed-top navbar-expand-lg navbar-dark danger-color">
 
     <!-- Navbar brand -->
-    <a class="navbar-brand text-center" href="/">ラーメンブログ</a>
+    <a class="navbar-brand text-center" href="/">
+      {% if request.site.siteconfig.blog_name %}
+        {{request.site.siteconfig.blog_name}}
+      {% else %}
+        ラーメンブログ
+      {% endif %}
+    </a>
 
     <!-- Collapse button -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
