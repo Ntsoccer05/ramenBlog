@@ -4,7 +4,7 @@ from django.views.generic import TemplateView, CreateView, DetailView, UpdateVie
 from .models import Post, Like, Category, Comment, Reply, Author
 from django.urls import reverse_lazy
 from django.contrib import messages
-from .forms import PostForm, LoginForm, SignUpForm, SearchForm, ContactForm, CommentForm, ReplyForm
+from .forms import PostForm, LoginForm, SignUpForm, SearchForm, ContactForm, CommentForm, ReplyForm, UserUpdateForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -50,6 +50,14 @@ class OnlyMyReplyMixin(UserPassesTestMixin):
         reply=Reply.objects.get(id=self.kwargs['pk'])
         return reply.author==self.request.user
 
+class OnlyYouMixin(UserPassesTestMixin):
+    """本人か、スーパーユーザーだけユーザーページアクセスを許可する"""
+    raise_exception = True
+
+    def test_func(self):
+        user = self.request.user
+        return user.pk == self.kwargs['pk'] or user.is_superuser
+
 class AuthorCreate(LoginRequiredMixin, CreateView):
     model = Author
     fields = ['name']
@@ -57,6 +65,21 @@ class AuthorCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         return super().form_valid(form)
+
+class UserDetail(OnlyYouMixin, DetailView):
+    """ユーザーの詳細ページ"""
+    model = User
+    # デフォルトユーザーを使う場合に備え、きちんとtemplate名を書く
+    template_name = 'ramenapp/user_detail.html'
+
+class UserUpdate(OnlyYouMixin, UpdateView):
+    """ユーザー情報更新ページ"""
+    model = User
+    form_class = UserUpdateForm
+    template_name = 'ramenapp/user_form.html'  # デフォルトユーザーを使う場合に備え、きちんとtemplate名を書く
+
+    def get_success_url(self):
+        return resolve_url('ramenapp:user_detail', pk=self.kwargs['pk'])
 
 class Index(TemplateView):
     template_name = 'ramenapp/index.html'
@@ -257,7 +280,10 @@ class CommentFormView(LoginRequiredMixin, CreateView):
         #     'post': post
         # }
         context['post'] = get_object_or_404(Post, pk=post_pk)
-        context['form'] = CommentForm( initial = { 'author': self.request.user } ) 
+        context['form'] = CommentForm(initial = { 
+                'author': self.request.user, 
+                'mailadress' : self.request.user.email,
+            }) 
         return context
 
 # def comment_initail(request):
@@ -299,6 +325,7 @@ class ReplyFormView(LoginRequiredMixin, CreateView):
         comment_pk = self.kwargs['pk']
         comment = get_object_or_404(Comment, pk=comment_pk)
         reply.comment = comment
+        reply.authority = self.request.user.email
         # form.instance.author = self.request.user
         # form.instance.author_id = self.request.user.id
         reply.request = self.request
@@ -311,7 +338,7 @@ class ReplyFormView(LoginRequiredMixin, CreateView):
         comment = get_object_or_404(Comment, pk=pk)
         context['comment'] = comment
         context['post'] = comment.post 
-        context['form'] = CommentForm( initial = { 'author': self.request.user } ) 
+        context['form'] = ReplyForm( initial = { 'author': self.request.user } ) 
         return context
 
 

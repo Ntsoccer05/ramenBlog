@@ -81,6 +81,7 @@
           <div class="dropdown-menu dropdown-primary" aria-labelledby="account">
             {% if request.user.is_authenticated %}
             <a class="dropdown-item">{{request.user}}</a>
+            <a class="dropdown-item" href="{% url 'ramenapp:user_update' request.user.id %}">ユーザー名変更</a>
             <a class="dropdown-item" href="{% url 'ramenapp:logout' %}">ログアウト</a>
             {% else %}
             <a class="dropdown-item" href="{% url 'ramenapp:login' %}">ログイン</a>

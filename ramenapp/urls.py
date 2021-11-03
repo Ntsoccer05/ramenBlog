@@ -5,6 +5,8 @@ app_name = 'ramenapp'
 
 urlpatterns = [
     path('', views.Index.as_view(), name='index'),
+    path('user_update/<int:pk>/', views.UserUpdate.as_view(), name='user_update'),
+    path('user_detail/<int:pk>/', views.UserDetail.as_view(), name='user_detail'),
     path('post_create', views.PostCreate.as_view(), name='post_create'),
     path('post_detail/<int:pk>', views.PostDetail.as_view(), name='post_detail'),
     path('post_update/<int:pk>', views.PostUpdate.as_view(), name='post_update'),

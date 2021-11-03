@@ -8,17 +8,17 @@
                 {% if request.user.is_authenticated%}
                 <a href="{% url 'ramenapp:reply_form' comment.pk %}">返信する</a>
                 {% endif %}
-                {% if comment.author == request.user %}
+                {% if comment.useremail == request.user.email %}
                 <a class="text-danger" href="{% url 'ramenapp:comment_delete' comment.pk %}">削除</a>
                 {% endif %}
             </p>
             {% for reply in comment.replies.all %}
                 <div class="reply ml-5">
-                    <strong>{{ reply.author }}</strong>・{{ reply.created_at }}
+                    <strong>{{ reply.author }}</strong>・{{ reply.created_at }}{{reply.authority}}
                     <p>{{ reply.text|linebreaksbr }}</p>
                     <p>
-                        {% if reply.author == request.user %}
-                        <a class="text-danger" href="{% url 'ramenapp:reply_delete' reply.pk %}">削除</a>
+                        {% if reply.authority == request.user.email %}
+                            <a class="text-danger" href="{% url 'ramenapp:reply_delete' reply.pk %}">削除</a>
                         {% endif %}
                     </p>
                 </div>

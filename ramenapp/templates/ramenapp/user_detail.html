@@ -1,0 +1,17 @@
+{% extends "ramenapp/base.html" %}
+{% block content %}
+<br>
+<br>
+<table class="table">
+  <tbody>
+    <tr>
+      <th>メールアドレス</th>
+      <td>{{ user.email }}</td>
+    </tr>
+    <tr>
+      <th>名前</th>
+      <td>{{ user.username }}</td>
+    </tr>
+  </tbody>
+</table>
+{% endblock %}

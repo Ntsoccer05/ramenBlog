@@ -37,6 +37,17 @@ class SignUpForm(UserCreationForm):
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
 
+class UserUpdateForm(forms.ModelForm):
+    """ユーザー情報更新フォーム"""
+
+    username = forms.CharField(help_text='※新しい名前を記入してください。', label="名前", required=True, widget=forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '名前',
+            }))
+
+    class Meta:
+        model = User
+        fields = ('username',)
 
 class SearchForm(forms.Form):
     freeword = forms.CharField(
@@ -104,11 +115,11 @@ class CommentForm(ModelForm):
     #     self.author = User.username
     #     super().__init__(*args, **kwargs)
 
-    author = forms.CharField(help_text='※変更可能です。', label="名前", required=True, widget=forms.TextInput(attrs={
+    author = forms.CharField(help_text='※変更可能(デフォルトはあなたの「ユーザー名」)', label="名前", required=True, widget=forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': '名前',
             }))
-    mailadress = forms.CharField(help_text='※コメント欄には表示されません。入力すると返信があった際にメール通知します。ユーザ登録の際にメールアドレスを登録(Googleでユーザ登録も含む)している場合必要ありません', label='メールアドレス', required=False, widget=forms.EmailInput(attrs={
+    mailadress = forms.CharField(help_text='※コメント欄には表示されません。入力すると返信があった際にメール通知します。変更可', label='メールアドレス', required=False, widget=forms.EmailInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'メールアドレス(※任意です)',
             }))
@@ -144,7 +155,7 @@ class CommentForm(ModelForm):
 
 
 class ReplyForm(ModelForm):
-    author = forms.CharField(help_text='※変更可能です。', label="名前", required=True, widget=forms.TextInput(attrs={
+    author = forms.CharField(help_text='※変更可能(デフォルトはあなたの「ユーザー名」)', label="名前", required=True, widget=forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': '名前',
             }))

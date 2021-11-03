@@ -74,6 +74,7 @@ class Reply(models.Model):
     comment = models.ForeignKey(
         Comment, on_delete=models.CASCADE, related_name='replies', null=True)
     author = models.CharField('名前', max_length=50, blank=True, null=True)
+    authority = models.CharField(max_length=100, blank=True, null=True)
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
