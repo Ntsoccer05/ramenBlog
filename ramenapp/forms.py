@@ -100,7 +100,11 @@ class ContactForm(forms.Form):
 
 
 class CommentForm(ModelForm):
-    mailadress = forms.CharField(help_text='※入力しておくと、他の方から返信があった際に通知します。コメント欄には表示されません。登録の際にメールアドレスを登録している場合必要ありません', label='メールアドレス', required=False, widget=forms.EmailInput(attrs={
+    author = forms.CharField(help_text='※Googleでユーザ登録した方はこちら記入しないと、メールアドレスのホスト名が名前として表示されます。', label="名前", required=False, widget=forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '名前(※任意です)',
+            }))
+    mailadress = forms.CharField(help_text='※コメント欄には表示されません。入力すると返信があった際にメール通知します。ユーザ登録の際にメールアドレスを登録(Googleでユーザ登録も含む)している場合必要ありません', label='メールアドレス', required=False, widget=forms.EmailInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'メールアドレス(※任意です)',
             }))
@@ -110,7 +114,7 @@ class CommentForm(ModelForm):
             }))
     class Meta:
         model = Comment
-        fields = ('text','mailadress',)
+        fields = ('text', 'author', 'mailadress')
         # mailadress = forms.CharField(widget=forms.EmailInput(attrs={
         #         'required' : 'false',
         #         'class': 'form-control',
@@ -136,9 +140,13 @@ class CommentForm(ModelForm):
 
 
 class ReplyForm(ModelForm):
+    author = forms.CharField(help_text='※Googleでユーザ登録した方はこちら記入しないと、メールアドレスのホスト名が名前として表示されます。', label="名前", required=False, widget=forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '名前(※任意です)',
+            }))
     class Meta:
         model = Reply
-        fields = ('text',)
+        fields = ('text','author')
         widgets = {
             'text': Textarea(attrs={
                 'class': 'form-control',

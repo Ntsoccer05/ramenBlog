@@ -30,6 +30,10 @@
     text-decoration: underline;
 }
 
+.helptext{
+    color: red;
+}
+
 @media screen and (max-width:900px) {
     .navbar-brand {
         display: block!important
