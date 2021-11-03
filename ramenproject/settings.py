@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
 ]
 
-SITE_ID = 1
+# サイトのドメイン名を変更するたびに数字を増やす(現在: 3)
+SITE_ID = 3
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
