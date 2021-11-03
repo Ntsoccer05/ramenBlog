@@ -180,14 +180,14 @@ ALLOWED_HOSTS = ['*']
 # 本番環境でコメントを外す
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-DEBUG = False
+DEBUG = True
 
 try:
     from .local_settings import *
 except ImportError:
     pass
 
-if not DEBUG:
+# if not DEBUG:
     SECRET_KEY = os.environ['SECRET_KEY']
     DEFAULT_FROM_EMAIL = os.environ['DEFAULT_FROM_EMAIL']
     EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
