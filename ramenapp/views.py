@@ -17,7 +17,7 @@ from django.contrib.sitemaps import ping_google
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from .mixins import SuperuserRequiredMixin
-
+from django.contrib.auth.models import User
 
 @login_required
 def ping(request):
@@ -257,9 +257,24 @@ class CommentFormView(LoginRequiredMixin, CreateView):
         #     'post': post
         # }
         context['post'] = get_object_or_404(Post, pk=post_pk)
+        context['form'] = CommentForm( initial = { 'author': self.request.user } ) 
         return context
 
-
+# def comment_initail(request):
+#     queryset = User.objects.get(id=request.user.id)
+   
+#     initial_data = {
+#         'author': queryset.username,
+#     }
+ 
+#     form = CommentForm(
+#         initial=initial_data
+#     )
+ 
+#     context = {
+#         'form': form
+#     }
+#     return render(request, 'ramenapp/comment_form.html', context)
 # @login_required
 # def comment_remove(request, pk):
 #     comment = get_object_or_404(Comment, pk=pk)
@@ -296,6 +311,7 @@ class ReplyFormView(LoginRequiredMixin, CreateView):
         comment = get_object_or_404(Comment, pk=pk)
         context['comment'] = comment
         context['post'] = comment.post 
+        context['form'] = CommentForm( initial = { 'author': self.request.user } ) 
         return context
 
 

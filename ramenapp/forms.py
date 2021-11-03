@@ -100,7 +100,11 @@ class ContactForm(forms.Form):
 
 
 class CommentForm(ModelForm):
-    author = forms.CharField(help_text='※Googleでユーザ登録した方はこちら記入しないと、メールアドレスのホスト名が名前として表示されます。', label="名前", required=False, widget=forms.TextInput(attrs={
+    # def __init__(self, *args, **kwargs):
+    #     self.author = User.username
+    #     super().__init__(*args, **kwargs)
+
+    author = forms.CharField(help_text='※変更可能です。', label="名前", required=True, widget=forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': '名前(※任意です)',
             }))
@@ -134,13 +138,13 @@ class CommentForm(ModelForm):
         #         'placeholder': 'メールアドレス(任意です)'
         #     }),
         # }
-        labels = {
-            'text': '',
-        }
+        # labels = {
+        #     'text': '',
+        # }
 
 
 class ReplyForm(ModelForm):
-    author = forms.CharField(help_text='※Googleでユーザ登録した方はこちら記入しないと、メールアドレスのホスト名が名前として表示されます。', label="名前", required=False, widget=forms.TextInput(attrs={
+    author = forms.CharField(help_text='※変更可能です。', label="名前", required=True, widget=forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': '名前(※任意です)',
             }))

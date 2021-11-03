@@ -2,13 +2,7 @@
     <div class="comments">
         {% for comment in object.comments.all %}
         <div class="comment">
-            <strong>
-                {% if comment.author %}
-                    {{ comment.author }}
-                {% else %}
-                    {{request.user}}
-                {% endif %}
-            </strong>・{{ comment.created_at }}
+            <strong>{{ comment.author }}</strong>・{{ comment.created_at }}
             <p>{{ comment.text|linebreaksbr }}</p>
             <p>
                 {% if request.user.is_authenticated%}
@@ -20,13 +14,7 @@
             </p>
             {% for reply in comment.replies.all %}
                 <div class="reply ml-5">
-                    <strong>
-                        {% if reply.author %}
-                            {{ reply.author }}
-                        {% else %}
-                            {{request.user}}
-                        {% endif %}
-                    </strong>・{{ reply.created_at }}
+                    <strong>{{ reply.author }}</strong>・{{ reply.created_at }}
                     <p>{{ reply.text|linebreaksbr }}</p>
                     <p>
                         {% if reply.author == request.user %}
