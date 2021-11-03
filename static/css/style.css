@@ -6,6 +6,30 @@
     text-decoration: underline;
 }
 
+.serch-title:hover{
+    text-decoration: underline;
+}
+
+.post-list-all:hover{
+    text-decoration: underline;
+}
+
+.category-detail:hover{
+    text-decoration: underline;
+}
+
+.category-title:hover{
+    text-decoration: underline;
+}
+
+.category-all:hover{
+    text-decoration: underline;
+}
+
+.like-list:hover{
+    text-decoration: underline;
+}
+
 @media screen and (max-width:900px) {
     .navbar-brand {
         display: block!important
