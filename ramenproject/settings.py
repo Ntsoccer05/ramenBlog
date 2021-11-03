@@ -49,7 +49,7 @@ INSTALLED_APPS = [
 ]
 
 # サイトのドメイン名を変更するたびに数字を増やす(現在: 3)
-SITE_ID = 3
+SITE_ID = 4
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
